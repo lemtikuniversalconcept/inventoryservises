@@ -2318,7 +2318,7 @@ def push_alert_to_relationship_api(alert: dict[str, Any]) -> None:
         return
     req = urllib.request.Request(
         f"{RELATIONSHIP_API_URL}/internal/inventory-alert",
-        data=json.dumps(alert).encode("utf-8"),
+        data=json.dumps(alert, default=str).encode("utf-8"),
         headers={
             "Content-Type": "application/json",
             "X-Internal-Key": RELATIONSHIP_API_KEY,
