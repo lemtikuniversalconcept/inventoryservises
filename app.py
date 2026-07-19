@@ -30,10 +30,14 @@ except Exception:  # pragma: no cover - optional dependency in local dev
 TZ = timezone(timedelta(hours=1))
 APP_STARTED_AT = datetime.now(timezone.utc)
 DEFAULT_ORG_ID = "org_abc123"
-INTERNAL_API_KEY = os.getenv("INTERNAL_API_KEY", "dev-internal-key")
 RELATIONSHIP_API_URL = os.getenv("RELATIONSHIP_API_URL", "").rstrip("/")
 RELATIONSHIP_API_KEY = os.getenv("RELATIONSHIP_API_KEY", "")
 ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
+INTERNAL_API_KEY = os.getenv("INTERNAL_API_KEY", "").strip()
+if ENVIRONMENT == "production" and not INTERNAL_API_KEY:
+    raise RuntimeError("INTERNAL_API_KEY is required in production.")
+if not INTERNAL_API_KEY:
+    INTERNAL_API_KEY = "dev-internal-key"
 DEFAULT_MIN_OFFICERS = int(os.getenv("DEFAULT_MIN_OFFICERS", "9"))
 DEFAULT_MIN_ARMED_OFFICERS = int(os.getenv("DEFAULT_MIN_ARMED_OFFICERS", "3"))
 DEFAULT_MIN_VEHICLES = int(os.getenv("DEFAULT_MIN_VEHICLES", "2"))
